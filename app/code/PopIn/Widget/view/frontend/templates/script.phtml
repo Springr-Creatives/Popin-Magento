@@ -1,0 +1,63 @@
+<?php
+/** @var \PopIn\Widget\Block\Script $block */
+$token = $block->escapeJs($block->getToken());
+$mode = $block->escapeJs($block->getMode());
+?>
+<script>
+(function() {
+    var popInScript = document.createElement('script');
+    popInScript.setAttribute('src', 'https://widget01.popin.to/js/widget-module.js');
+    popInScript.setAttribute('type', 'module');
+    document.body.appendChild(popInScript);
+
+    popInScript.onload = function() {
+        require(['Magento_Customer/js/customer-data'], function(customerData) {
+            var popinSection = customerData.get('popin-data');
+
+            function doInit() {
+                require(['popin'], function() {
+                    var config = {
+                        token: "<?= /* @noEscape */ $token ?>",
+                        mode: "<?= /* @noEscape */ $mode ?>"
+                    };
+
+                    var info = popinSection();
+                    if (info && info.name) {
+                        config.captured = {};
+                        if (info.name) config.captured.name = info.name;
+                        if (info.email) config.captured.email = info.email;
+                        if (info.mobile) config.captured.mobile = info.mobile;
+                        if (info.pincode) config.captured.pincode = info.pincode;
+                    }
+
+                    popin.popInWidgetInit(config);
+                });
+            }
+
+            // Customer data loads from localStorage (fast) or AJAX.
+            // By the time the external script finishes loading, section data
+            // is almost always available. We check and fall back to a
+            // subscribe + timeout for the rare first-page-after-login case.
+            var info = popinSection();
+            if (info && Object.keys(info).length > 0) {
+                doInit();
+            } else {
+                var initialized = false;
+                popinSection.subscribe(function() {
+                    if (!initialized) {
+                        initialized = true;
+                        doInit();
+                    }
+                });
+                // Guest users won't get section data — init after brief wait
+                setTimeout(function() {
+                    if (!initialized) {
+                        initialized = true;
+                        doInit();
+                    }
+                }, 1500);
+            }
+        });
+    };
+})();
+</script>

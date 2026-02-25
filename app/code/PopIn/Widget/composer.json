@@ -1,0 +1,27 @@
+{
+    "name": "nowflow/module-popin-widget",
+    "description": "Popin - Video call widget for e-commerce websites. Enables live video shopping experiences directly on your Magento store.",
+    "type": "magento2-module",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Nowflow Technologies Pvt Ltd",
+            "homepage": "https://popin.to"
+        }
+    ],
+    "version": "1.0.0",
+    "require": {
+        "php": ">=7.4",
+        "magento/framework": "*",
+        "magento/module-customer": "*",
+        "magento/module-store": "*"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "PopIn\\Widget\\": ""
+        }
+    }
+}
