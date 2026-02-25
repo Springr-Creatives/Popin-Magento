@@ -9,7 +9,7 @@
             <class>separator-top</class>
             <label>Video Call Widget</label>
             <tab>popin</tab>
-            <resource>PopIn_Widget::config</resource>
+            <resource>Popin_Widget::config</resource>
             <group id="general" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>General Settings</label>
                 <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -26,7 +26,7 @@
                 </field>
                 <field id="mode" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Widget Mode</label>
-                    <source_model>PopIn\Widget\Model\Config\Source\Mode</source_model>
+                    <source_model>Popin\Widget\Model\Config\Source\Mode</source_model>
                     <comment>Hidden mode requires a button to trigger the widget. Visible mode shows the widget launcher automatically.</comment>
                     <depends>
                         <field id="enabled">1</field>

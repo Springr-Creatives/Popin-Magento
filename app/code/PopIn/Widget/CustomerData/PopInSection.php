@@ -1,12 +1,12 @@
 <?php
 
-namespace PopIn\Widget\CustomerData;
+namespace Popin\Widget\CustomerData;
 
 use Magento\Customer\CustomerData\SectionSourceInterface;
 use Magento\Customer\Helper\Session\CurrentCustomer;
 use Magento\Customer\Api\AddressRepositoryInterface;
 
-class PopInSection implements SectionSourceInterface
+class PopinSection implements SectionSourceInterface
 {
     private CurrentCustomer $currentCustomer;
     private AddressRepositoryInterface $addressRepository;

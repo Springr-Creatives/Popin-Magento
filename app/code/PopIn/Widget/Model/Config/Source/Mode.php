@@ -1,6 +1,6 @@
 <?php
 
-namespace PopIn\Widget\Model\Config\Source;
+namespace Popin\Widget\Model\Config\Source;
 
 use Magento\Framework\Data\OptionSourceInterface;
 

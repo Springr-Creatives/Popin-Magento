@@ -4,7 +4,7 @@
     <type name="Magento\Customer\CustomerData\SectionPool">
         <arguments>
             <argument name="sectionSourceMap" xsi:type="array">
-                <item name="popin-data" xsi:type="string">PopIn\Widget\CustomerData\PopInSection</item>
+                <item name="popin-data" xsi:type="string">Popin\Widget\CustomerData\PopinSection</item>
             </argument>
         </arguments>
     </type>

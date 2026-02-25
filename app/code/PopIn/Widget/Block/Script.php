@@ -1,6 +1,6 @@
 <?php
 
-namespace PopIn\Widget\Block;
+namespace Popin\Widget\Block;
 
 use Magento\Framework\View\Element\Template;
 use Magento\Store\Model\ScopeInterface;
