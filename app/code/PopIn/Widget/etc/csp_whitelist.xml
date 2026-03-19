@@ -22,5 +22,20 @@
                 <value id="popin_media" type="host">*.popin.to</value>
             </values>
         </policy>
+        <policy id="img-src">
+            <values>
+                <value id="popin_images" type="host">*.popin.to</value>
+            </values>
+        </policy>
+        <policy id="style-src">
+            <values>
+                <value id="popin_styles" type="host">*.popin.to</value>
+            </values>
+        </policy>
+        <policy id="font-src">
+            <values>
+                <value id="popin_fonts" type="host">*.popin.to</value>
+            </values>
+        </policy>
     </policies>
 </csp_whitelist>

@@ -8,4 +8,11 @@
             </argument>
         </arguments>
     </type>
+    <type name="Magento\Csp\Model\CompositePolicyCollector">
+        <arguments>
+            <argument name="collectors" xsi:type="array">
+                <item name="popin-widget-csp" xsi:type="object">Popin\Widget\Model\Csp\CspPolicyCollector</item>
+            </argument>
+        </arguments>
+    </type>
 </config>
