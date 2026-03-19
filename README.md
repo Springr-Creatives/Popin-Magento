@@ -129,6 +129,44 @@ In Magento 2, you can add the button in any of these ways:
 
 > **Note:** The button will only work on pages where the Popin widget script is loaded. Since this module injects the script on all frontend pages, the button can be placed anywhere on your storefront.
 
+## Updating
+
+### If installed manually:
+
+1. **Download the latest version:**
+
+   ```bash
+   git clone https://github.com/Springr-Creatives/Popin-Magento.git
+   ```
+
+2. **Replace the module files** in your Magento installation:
+
+   ```bash
+   rm -rf <your-magento-root>/app/code/Popin/Widget
+   cp -r Popin-Magento/app/code/Popin <your-magento-root>/app/code/Popin
+   ```
+
+3. **Run setup:**
+
+   ```bash
+   cd <your-magento-root>
+   bin/magento setup:upgrade
+   bin/magento setup:di:compile
+   bin/magento cache:flush
+   ```
+
+### If installed via Composer:
+
+```bash
+cd <your-magento-root>
+composer update nowflow/module-popin-widget
+bin/magento setup:upgrade
+bin/magento setup:di:compile
+bin/magento cache:flush
+```
+
+> **Note:** If you previously had to whitelist `*.popin.to` in Magento's Content Security Policy manually, this update makes that unnecessary. The module now handles CSP configuration automatically. You can remove any manual CSP entries you added for Popin.
+
 ## Uninstallation
 
 ### If installed manually:
