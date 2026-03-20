@@ -20,13 +20,26 @@ class CspPolicyCollector implements PolicyCollectorInterface
      */
     public function collect(array $defaultPolicies = []): array
     {
+        // style-src: 'self' for the store's own CSS, 'unsafe-inline' for dynamically
+        // created <style> elements by widget.js/zoid, and the host for widget.css
         $defaultPolicies[] = new FetchPolicy(
             'style-src',
-            false,  // noneAllowed
-            [],     // hostSources
-            [],     // schemeSources
-            false,  // selfAllowed
-            true    // inlineAllowed — adds 'unsafe-inline'
+            false,
+            ['https://widget01.popin.to', 'https://*.popin.to'],
+            [],
+            true,   // selfAllowed — preserves 'self' for the store's own stylesheets
+            true    // inlineAllowed — adds 'unsafe-inline' for dynamic <style> elements
+        );
+
+        // style-src-elem: explicit fallback so browsers supporting CSP Level 3
+        // don't rely on style-src alone for <link> and <style> elements
+        $defaultPolicies[] = new FetchPolicy(
+            'style-src-elem',
+            false,
+            ['https://widget01.popin.to', 'https://*.popin.to'],
+            [],
+            true,
+            true
         );
 
         return $defaultPolicies;
