@@ -97,18 +97,18 @@ Guest visitors can still use the widget; they simply won't have pre-filled infor
 
 When the widget mode is set to **Hidden**, the Popin launcher does not appear automatically. You need to add a button to your template that opens the widget on click.
 
-Use the `Popin('open')` JavaScript call to trigger the widget. Place the button wherever you want it to appear — for example, on product detail pages, the header, or a CMS block.
+Use the `popin.Popin('open')` JavaScript call to trigger the widget. Place the button wherever you want it to appear — for example, on product detail pages, the header, or a CMS block.
 
 **Basic example:**
 
 ```html
-<button onclick="Popin('open')">Live Video Shopping</button>
+<button onclick="popin.Popin('open')">Live Video Shopping</button>
 ```
 
 **Styled example:**
 
 ```html
-<button onclick="Popin('open')" class="action primary" style="background-color: #ff5722; border: none; color: #fff; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+<button onclick="popin.Popin('open')" class="action primary" style="background-color: #ff5722; border: none; color: #fff; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
     Start Video Call
 </button>
 ```
