@@ -5,59 +5,79 @@ $mode = $block->escapeJs($block->getMode());
 ?>
 <script>
 (function() {
-    var popInScript = document.createElement('script');
-    popInScript.setAttribute('src', 'https://widget01.popin.to/js/widget-module.js');
-    popInScript.setAttribute('type', 'module');
-    document.body.appendChild(popInScript);
+    // Luma ships RequireJS; Hyvä (Alpine.js) does not. Feature-detect and
+    // pick the matching widget build + customer-data source accordingly.
+    var isAmd = (typeof require === 'function');
 
-    popInScript.onload = function() {
+    function init(captured) {
+        var config = {
+            token: "<?= /* @noEscape */ $token ?>",
+            mode: "<?= /* @noEscape */ $mode ?>"
+        };
+
+        if (captured && captured.name) {
+            config.captured = {};
+            if (captured.name)    config.captured.name    = captured.name;
+            if (captured.email)   config.captured.email   = captured.email;
+            if (captured.mobile)  config.captured.mobile  = captured.mobile;
+            if (captured.pincode) config.captured.pincode = captured.pincode;
+        }
+
+        var popInScript = document.createElement('script');
+        if (isAmd) {
+            // Luma: AMD module build, resolved via RequireJS.
+            popInScript.setAttribute('type', 'module');
+            popInScript.setAttribute('src', 'https://widget01.popin.to/js/widget-module.js');
+            popInScript.onload = function() {
+                require(['popin'], function() {
+                    popin.popInWidgetInit(config);
+                });
+            };
+        } else {
+            // Hyvä: plain global build (no RequireJS). widget.js exposes
+            // popInWidgetInit() as a global and loads zoid itself.
+            popInScript.setAttribute('src', 'https://widget01.popin.to/js/widget.js');
+            popInScript.onload = function() {
+                popInWidgetInit(config);
+            };
+        }
+        document.body.appendChild(popInScript);
+    }
+
+    if (isAmd) {
+        // Luma: read the popin-data section via Magento_Customer/js/customer-data.
         require(['Magento_Customer/js/customer-data'], function(customerData) {
             var popinSection = customerData.get('popin-data');
 
-            function doInit() {
-                require(['popin'], function() {
-                    var config = {
-                        token: "<?= /* @noEscape */ $token ?>",
-                        mode: "<?= /* @noEscape */ $mode ?>"
-                    };
+            function go() { init(popinSection()); }
 
-                    var info = popinSection();
-                    if (info && info.name) {
-                        config.captured = {};
-                        if (info.name) config.captured.name = info.name;
-                        if (info.email) config.captured.email = info.email;
-                        if (info.mobile) config.captured.mobile = info.mobile;
-                        if (info.pincode) config.captured.pincode = info.pincode;
-                    }
-
-                    popin.popInWidgetInit(config);
-                });
-            }
-
-            // Customer data loads from localStorage (fast) or AJAX.
-            // By the time the external script finishes loading, section data
-            // is almost always available. We check and fall back to a
-            // subscribe + timeout for the rare first-page-after-login case.
+            // Section data loads from localStorage (fast) or AJAX. Usually ready
+            // by the time the external script loads; fall back to subscribe +
+            // timeout for the rare first-page-after-login case.
             var info = popinSection();
             if (info && Object.keys(info).length > 0) {
-                doInit();
+                go();
             } else {
                 var initialized = false;
                 popinSection.subscribe(function() {
-                    if (!initialized) {
-                        initialized = true;
-                        doInit();
-                    }
+                    if (!initialized) { initialized = true; go(); }
                 });
-                // Guest users won't get section data — init after brief wait
                 setTimeout(function() {
-                    if (!initialized) {
-                        initialized = true;
-                        doInit();
-                    }
+                    if (!initialized) { initialized = true; go(); }
                 }, 1500);
             }
         });
-    };
+    } else {
+        // Hyvä: no customer-data JS. Fetch the popin-data section directly from
+        // the canonical endpoint (timing-independent; the private-content-loaded
+        // event often fires before this script runs, so we don't rely on it).
+        fetch('/customer/section/load?sections=popin-data', {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            credentials: 'include'
+        })
+        .then(function(res) { return res.json(); })
+        .then(function(json) { init((json && json['popin-data']) || {}); })
+        .catch(function() { init({}); });
+    }
 })();
 </script>
