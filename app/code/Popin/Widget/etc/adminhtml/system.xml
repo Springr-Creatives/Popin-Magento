@@ -33,6 +33,14 @@
                     </depends>
                 </field>
             </group>
+            <group id="products" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Product Sync</label>
+                <field id="sync_products" translate="label comment" type="button" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sync Products</label>
+                    <frontend_model>Popin\Widget\Block\Adminhtml\System\Config\SyncButton</frontend_model>
+                    <comment>Push all catalog products of this store to your Popin backend. Configurable/grouped product variants are ignored — each product is sent once. Save the Popin Token first.</comment>
+                </field>
+            </group>
         </section>
     </system>
 </config>

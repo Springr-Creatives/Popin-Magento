@@ -9,13 +9,15 @@
             "homepage": "https://popin.to"
         }
     ],
-    "version": "1.0.1",
+    "version": "1.0.2",
     "require": {
         "php": ">=7.4",
         "magento/framework": "*",
         "magento/module-customer": "*",
         "magento/module-store": "*",
-        "magento/module-csp": "*"
+        "magento/module-csp": "*",
+        "magento/module-catalog": "*",
+        "magento/module-backend": "*"
     },
     "autoload": {
         "files": [

@@ -1,0 +1,43 @@
+<?php
+/** @var \Popin\Widget\Block\Adminhtml\System\Config\SyncButton $block */
+$buttonId = $block->escapeHtmlAttr($block->getButtonId());
+$ajaxUrl = $block->escapeUrl($block->getAjaxUrl());
+$formKey = $block->escapeHtmlAttr($block->getFormKeyValue());
+?>
+<button type="button" id="<?= /* @noEscape */ $buttonId ?>" class="action-default scalable">
+    <span><?= $block->escapeHtml(__('Sync Products Now')) ?></span>
+</button>
+<span id="<?= /* @noEscape */ $buttonId ?>_status" class="popin-sync-status" style="margin-left: 12px;"></span>
+
+<script>
+require(['jquery'], function ($) {
+    'use strict';
+
+    var $button = $('#<?= /* @noEscape */ $buttonId ?>'),
+        $status = $('#<?= /* @noEscape */ $buttonId ?>_status');
+
+    $button.on('click', function () {
+        $button.prop('disabled', true);
+        $status.css('color', '#666').text('<?= $block->escapeJs(__('Syncing products, please wait…')) ?>');
+
+        $.ajax({
+            url: '<?= /* @noEscape */ $ajaxUrl ?>',
+            type: 'POST',
+            dataType: 'json',
+            data: { form_key: '<?= /* @noEscape */ $formKey ?>' },
+            showLoader: true
+        }).done(function (response) {
+            if (response && response.success) {
+                $status.css('color', '#079542').text(response.message);
+            } else {
+                $status.css('color', '#e02b27')
+                    .text((response && response.message) || '<?= $block->escapeJs(__('Sync failed.')) ?>');
+            }
+        }).fail(function () {
+            $status.css('color', '#e02b27').text('<?= $block->escapeJs(__('Sync request failed. Please try again.')) ?>');
+        }).always(function () {
+            $button.prop('disabled', false);
+        });
+    });
+});
+</script>

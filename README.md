@@ -93,6 +93,32 @@ Once enabled, the module injects the Popin widget script on every frontend page 
 
 Guest visitors can still use the widget; they simply won't have pre-filled information.
 
+## Syncing Products to Popin
+
+The module can push your catalog into your Popin backend so your products are available inside the Popin dashboard and widget — the same way the Popin Shopify app syncs a store's products.
+
+1. In the Magento Admin, go to **Stores > Configuration > Popin > Video Call Widget**.
+2. Make sure the **Popin Token** is saved (this token identifies your store/seller with Popin).
+3. Use the scope switcher (top-left of the Configuration page) to pick the **Store View** or **Website** whose products you want to sync.
+4. Under **Product Sync**, click **Sync Products Now**. The status message next to the button reports how many products were sent.
+
+What gets synced, per product:
+
+| Popin field   | Source in Magento                                                        |
+| ------------- | ------------------------------------------------------------------------ |
+| `external_id` | Magento product ID (used to match/update existing Popin records)         |
+| `name`        | Product name                                                             |
+| `url`         | Storefront product URL (resolved against the selected store's base URL)  |
+| `price`       | Final price, in minor units (price × 100)                                |
+| `image`       | Base image URL                                                           |
+
+**Notes:**
+
+- Only **enabled** products that are **individually visible** (Catalog and/or Search) are synced. Configurable/grouped product **variants are ignored** — each parent product is sent once with its own price and image.
+- Products are matched by store token + product ID, so re-running the sync **updates** existing products rather than duplicating them.
+- The sync runs for the store scope selected in the Configuration page. Run it once per store/website you want in Popin.
+- Products sync to `https://widget01.popin.to`. This is the default and normally needs no change.
+
 ## Adding a Custom Button (Hidden Mode)
 
 When the widget mode is set to **Hidden**, the Popin launcher does not appear automatically. You need to add a button to your template that opens the widget on click.

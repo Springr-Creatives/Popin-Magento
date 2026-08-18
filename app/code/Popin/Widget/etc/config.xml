@@ -7,6 +7,7 @@
                 <enabled>0</enabled>
                 <token/>
                 <mode>hidden</mode>
+                <api_url>https://widget01.popin.to</api_url>
             </general>
         </popin_widget>
     </default>
